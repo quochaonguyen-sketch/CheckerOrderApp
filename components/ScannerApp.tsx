@@ -8,17 +8,27 @@ import type { LookupResponse, ScanStatus } from "@/types/lookup";
 import { CameraScanner } from "@/components/CameraScanner";
 import { ResultCard } from "@/components/ResultCard";
 import { ScanInput } from "@/components/ScanInput";
+import { ZonePopup } from "@/components/ZonePopup";
 
 const DUPLICATE_COOLDOWN_MS = 500;
 const CAMERA_DUPLICATE_COOLDOWN_MS = 1800;
 const SCANNER_BUFFER_RESET_MS = 900;
+const ZONE_POPUP_VISIBLE_MS = 1400;
+
+type ScanSource = "scanner" | "camera";
+
+type ScanJob = {
+  code: string;
+  source: ScanSource;
+};
 
 export function ScannerApp() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
-  const queueRef = useRef<string[]>([]);
+  const queueRef = useRef<ScanJob[]>([]);
   const keyBufferRef = useRef("");
   const keyBufferTimerRef = useRef<number | null>(null);
+  const popupTimerRef = useRef<number | null>(null);
   const processingRef = useRef(false);
   const lastSubmittedRef = useRef<{ code: string; submittedAt: number } | null>(
     null
@@ -28,6 +38,11 @@ export function ScannerApp() {
   const [lastCode, setLastCode] = useState("");
   const [status, setStatus] = useState<ScanStatus>("idle");
   const [result, setResult] = useState<LookupResponse | null>(null);
+  const [zonePopup, setZonePopup] = useState({
+    visible: false,
+    zone: "",
+    code: "",
+  });
 
   const focusInput = useCallback(() => {
     window.setTimeout(() => {
@@ -42,6 +57,9 @@ export function ScannerApp() {
       abortRef.current?.abort();
       if (keyBufferTimerRef.current) {
         window.clearTimeout(keyBufferTimerRef.current);
+      }
+      if (popupTimerRef.current) {
+        window.clearTimeout(popupTimerRef.current);
       }
       window.speechSynthesis?.cancel();
     };
@@ -70,9 +88,9 @@ export function ScannerApp() {
       return;
     }
 
-    const nextCode = queueRef.current.shift();
+    const nextJob = queueRef.current.shift();
 
-    if (!nextCode) {
+    if (!nextJob) {
       return;
     }
 
@@ -81,7 +99,7 @@ export function ScannerApp() {
     const abortController = new AbortController();
     abortRef.current = abortController;
 
-    setLastCode(nextCode);
+    setLastCode(nextJob.code);
     setStatus("loading");
 
     try {
@@ -90,7 +108,7 @@ export function ScannerApp() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ code: nextCode }),
+        body: JSON.stringify({ code: nextJob.code }),
         signal: abortController.signal,
       });
 
@@ -112,6 +130,25 @@ export function ScannerApp() {
 
       if (lookupResult.found) {
         setStatus("found");
+        if (nextJob.source === "camera") {
+          if (popupTimerRef.current) {
+            window.clearTimeout(popupTimerRef.current);
+          }
+
+          setZonePopup({
+            visible: true,
+            zone: lookupResult.data.zone,
+            code: lookupResult.data.code,
+          });
+
+          popupTimerRef.current = window.setTimeout(() => {
+            setZonePopup((currentPopup) => ({
+              ...currentPopup,
+              visible: false,
+            }));
+          }, ZONE_POPUP_VISIBLE_MS);
+        }
+
         await speakText(buildZoneSpeechText(lookupResult.data.zone), {
           lang: "en-US",
         });
@@ -139,7 +176,7 @@ export function ScannerApp() {
     }
   }, [focusInput]);
 
-  const enqueueLookup = useCallback((rawCode: string, cooldownMs = DUPLICATE_COOLDOWN_MS) => {
+  const enqueueLookup = useCallback((rawCode: string, cooldownMs = DUPLICATE_COOLDOWN_MS, source: ScanSource = "scanner") => {
     const normalizedCode = normalizeCode(rawCode);
 
     if (inputRef.current) {
@@ -169,13 +206,16 @@ export function ScannerApp() {
       submittedAt: now,
     };
 
-    queueRef.current.push(normalizedCode);
+    queueRef.current.push({
+      code: normalizedCode,
+      source,
+    });
     void processQueue();
   }, [focusInput, processQueue]);
 
   const enqueueCameraLookup = useCallback(
     (rawCode: string) => {
-      enqueueLookup(rawCode, CAMERA_DUPLICATE_COOLDOWN_MS);
+      enqueueLookup(rawCode, CAMERA_DUPLICATE_COOLDOWN_MS, "camera");
     },
     [enqueueLookup]
   );
@@ -255,6 +295,11 @@ export function ScannerApp() {
         <CameraScanner onDetected={enqueueCameraLookup} />
 
         <ResultCard result={result} status={status} lastCode={lastCode} />
+        <ZonePopup
+          visible={zonePopup.visible}
+          zone={zonePopup.zone}
+          code={zonePopup.code}
+        />
       </div>
     </main>
   );
