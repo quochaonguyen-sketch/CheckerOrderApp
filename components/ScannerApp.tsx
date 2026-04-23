@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { playNotFoundAlert } from "@/lib/alertSound";
 import { buildZoneSpeechText, speakText } from "@/lib/speech";
 import { vibrateOnce } from "@/lib/haptics";
 import { normalizeCode } from "@/lib/normalize";
@@ -155,6 +156,10 @@ export function ScannerApp() {
         });
       } else {
         setStatus("not-found");
+        await playNotFoundAlert();
+        await speakText("Không tìm thấy", {
+          lang: "vi-VN",
+        });
       }
     } catch (error) {
       if (error instanceof DOMException && error.name === "AbortError") {
