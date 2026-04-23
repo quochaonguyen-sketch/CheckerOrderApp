@@ -264,17 +264,35 @@ export function CameraScanner({ onDetected }: CameraScannerProps) {
       </div>
 
       {isCameraOn ? (
-        <div className="relative mt-4 overflow-hidden rounded-[1.5rem] border-4 border-warehouse-ink bg-black">
+        <div className="fixed inset-0 z-50 bg-black">
           <video
             ref={videoRef}
-            className="aspect-video w-full object-cover"
+            className="h-[100svh] w-screen object-cover"
             muted
             playsInline
           />
-          <div className="pointer-events-none absolute inset-x-8 top-1/2 h-24 -translate-y-1/2 rounded-2xl border-4 border-warehouse-yellow shadow-[0_0_0_999px_rgba(0,0,0,0.25)]" />
-          <p className="absolute bottom-3 left-3 rounded-full bg-white/90 px-4 py-2 text-sm font-black text-warehouse-ink">
-            {status === "starting" ? "Đang mở camera..." : "Đưa mã vào khung"}
-          </p>
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0,transparent_34%,rgba(0,0,0,0.58)_35%,rgba(0,0,0,0.78)_100%)]" />
+          <div className="pointer-events-none absolute left-1/2 top-1/2 h-44 w-[86vw] max-w-2xl -translate-x-1/2 -translate-y-1/2 rounded-[2rem] border-4 border-warehouse-yellow shadow-[0_0_32px_rgba(246,195,67,0.7)] sm:h-56" />
+          <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-3 bg-gradient-to-b from-black/80 to-transparent p-4 text-white">
+            <div>
+              <p className="text-2xl font-black">Quét camera</p>
+              <p className="text-sm font-bold text-white/80">
+                {status === "starting"
+                  ? "Đang mở camera..."
+                  : "Đưa barcode vào khung vàng"}
+              </p>
+            </div>
+            <button
+              type="button"
+              className="rounded-2xl bg-warehouse-red px-5 py-3 text-lg font-black text-white active:scale-95"
+              onClick={stopCamera}
+            >
+              Tắt
+            </button>
+          </div>
+          <div className="absolute inset-x-4 bottom-5 rounded-3xl bg-white/92 px-5 py-4 text-center text-lg font-black text-warehouse-ink shadow-card">
+            Giữ mã trong khung, app sẽ tự đọc zone liên tục
+          </div>
         </div>
       ) : null}
 

@@ -40,8 +40,13 @@ function getGoogleSheetsConfig() {
   });
 
   if (!parsed.success) {
+    const missingFields = parsed.error.issues
+      .map((issue) => issue.path.join("."))
+      .filter(Boolean)
+      .join(", ");
+
     throw new Error(
-      "Thiếu hoặc sai biến môi trường Google Sheets. Kiểm tra .env.local."
+      `Thiếu hoặc sai biến môi trường Google Sheets: ${missingFields}. Kiểm tra Environment Variables trên Vercel hoặc .env.local khi chạy máy local.`
     );
   }
 
