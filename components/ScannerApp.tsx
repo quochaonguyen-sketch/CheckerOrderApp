@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { buildZoneSpeechText, speakText } from "@/lib/speech";
+import { vibrateOnce } from "@/lib/haptics";
 import { normalizeCode } from "@/lib/normalize";
 import type { LookupResponse, ScanStatus } from "@/types/lookup";
 import { CameraScanner } from "@/components/CameraScanner";
@@ -205,6 +206,8 @@ export function ScannerApp() {
       code: normalizedCode,
       submittedAt: now,
     };
+
+    vibrateOnce();
 
     queueRef.current.push({
       code: normalizedCode,

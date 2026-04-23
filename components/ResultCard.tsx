@@ -9,21 +9,24 @@ type ResultCardProps = {
 };
 
 export function ResultCard({ result, status, lastCode }: ResultCardProps) {
+  if (status === "loading") {
+    return (
+      <section className="flex min-h-[22rem] w-full flex-col items-center justify-center rounded-[2.5rem] border-4 border-warehouse-yellow bg-yellow-50 px-8 py-10 text-center shadow-card md:min-h-[28rem]">
+        <div className="h-5 w-5 animate-spin rounded-full border-4 border-warehouse-yellow border-t-transparent" />
+        <p className="mt-6 text-xl font-black uppercase tracking-[0.35em] text-warehouse-ink/70 md:text-3xl">
+          Đang tra cứu
+        </p>
+        <p className="mt-4 break-words text-5xl font-black uppercase tracking-widest text-warehouse-ink md:text-8xl">
+          {lastCode}
+        </p>
+      </section>
+    );
+  }
+
   if (!result) {
     return (
       <section className="flex min-h-[22rem] w-full items-center justify-center rounded-[2.5rem] border-4 border-dashed border-warehouse-line bg-white/40 px-8 py-10 shadow-card md:min-h-[28rem]">
-        {status === "loading" ? (
-          <div className="text-center">
-            <p className="text-xl font-black uppercase tracking-[0.35em] text-warehouse-yellow md:text-3xl">
-              Đang tra
-            </p>
-            <p className="mt-4 break-words text-5xl font-black uppercase tracking-widest text-warehouse-ink md:text-8xl">
-              {lastCode}
-            </p>
-          </div>
-        ) : (
-          <span className="sr-only">Chờ quét mã đơn</span>
-        )}
+        <span className="sr-only">Chờ quét mã đơn</span>
       </section>
     );
   }
