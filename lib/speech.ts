@@ -4,18 +4,76 @@ type SpeakOptions = {
   lang?: "vi-VN" | "en-US";
 };
 
+const PREFERRED_ENGLISH_VOICE_KEYWORDS = [
+  "google us english",
+  "microsoft aria",
+  "microsoft jenny",
+  "microsoft guy",
+  "microsoft davis",
+  "microsoft christopher",
+  "microsoft libby",
+  "microsoft ava",
+  "microsoft andrew",
+  "samantha",
+  "daniel",
+  "alex",
+];
+
+const PREFERRED_VIETNAMESE_VOICE_KEYWORDS = [
+  "vi-vn",
+  "vietnam",
+  "việt",
+];
+
+function findPreferredVoice(
+  voices: SpeechSynthesisVoice[],
+  keywords: string[]
+) {
+  for (const keyword of keywords) {
+    const matchedVoice = voices.find((voice) => {
+      const haystack = `${voice.name} ${voice.lang}`.toLowerCase();
+      return haystack.includes(keyword);
+    });
+
+    if (matchedVoice) {
+      return matchedVoice;
+    }
+  }
+
+  return null;
+}
+
 function pickVoice(voices: SpeechSynthesisVoice[], lang: string) {
   const normalizedLang = lang.toLowerCase();
+  const matchingLangVoices = voices.filter((voice) =>
+    voice.lang.toLowerCase().startsWith(normalizedLang.slice(0, 2))
+  );
+
+  if (lang === "en-US") {
+    return (
+      findPreferredVoice(matchingLangVoices, PREFERRED_ENGLISH_VOICE_KEYWORDS) ??
+      findPreferredVoice(voices, PREFERRED_ENGLISH_VOICE_KEYWORDS) ??
+      matchingLangVoices[0] ??
+      voices.find((voice) => voice.name.toLowerCase().includes("english")) ??
+      null
+    );
+  }
+
+  if (lang === "vi-VN") {
+    return (
+      findPreferredVoice(
+        matchingLangVoices,
+        PREFERRED_VIETNAMESE_VOICE_KEYWORDS
+      ) ??
+      findPreferredVoice(voices, PREFERRED_VIETNAMESE_VOICE_KEYWORDS) ??
+      matchingLangVoices[0] ??
+      voices.find((voice) => voice.name.toLowerCase().includes("vietnam")) ??
+      null
+    );
+  }
 
   return (
-    voices.find((voice) =>
-      voice.lang.toLowerCase().startsWith(normalizedLang.slice(0, 2))
-    ) ??
-    voices.find((voice) =>
-      lang === "vi-VN"
-        ? voice.name.toLowerCase().includes("vietnam")
-        : voice.name.toLowerCase().includes("english")
-    ) ??
+    matchingLangVoices[0] ??
     null
   );
 }
