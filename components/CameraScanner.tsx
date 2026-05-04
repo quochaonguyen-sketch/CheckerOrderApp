@@ -239,27 +239,45 @@ export function CameraScanner({ onDetected }: CameraScannerProps) {
   const isCameraOn = status === "starting" || status === "scanning";
 
   return (
-    <section className="w-full rounded-[2rem] border-4 border-warehouse-line bg-white/80 p-4 shadow-card">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <section className="w-full rounded-[1rem] border-2 border-warehouse-line bg-white/80 p-2 shadow-card">
+      <div className="flex items-center justify-between gap-3">
         <div>
-          <p className="text-xl font-black text-warehouse-ink md:text-2xl">
+          <p className="text-sm font-black text-warehouse-ink md:text-lg">
             Quét bằng camera
           </p>
-          <p className="text-sm font-bold text-warehouse-ink/60 md:text-base">
+          <p className="text-[10px] font-bold text-warehouse-ink/60 md:text-xs">
             Dành cho mobile/PDA không dùng scanner keyboard.
           </p>
         </div>
 
         <button
           type="button"
-          className={`rounded-2xl px-6 py-4 text-xl font-black text-white transition ${
+          aria-label={isCameraOn ? "Tắt camera" : "Bật camera"}
+          title={isCameraOn ? "Tắt camera" : "Bật camera"}
+          className={`flex h-8 w-8 items-center justify-center rounded-full text-white shadow-card transition active:scale-95 md:h-10 md:w-10 ${
             isCameraOn
-              ? "bg-warehouse-red active:scale-95"
-              : "bg-warehouse-green active:scale-95"
+              ? "bg-warehouse-red"
+              : "bg-warehouse-green"
           }`}
           onClick={isCameraOn ? stopCamera : startCamera}
         >
-          {isCameraOn ? "Tắt camera" : "Bật camera"}
+          {isCameraOn ? (
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              className="h-4 w-4 fill-current md:h-5 md:w-5"
+            >
+              <path d="M6 6h12v12H6z" />
+            </svg>
+          ) : (
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              className="h-4 w-4 fill-current md:h-5 md:w-5"
+            >
+              <path d="M9 4.5 7.5 6H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2.5L15 4.5H9ZM12 9a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm0 1.8A2.2 2.2 0 1 1 9.8 13 2.2 2.2 0 0 1 12 10.8Z" />
+            </svg>
+          )}
         </button>
       </div>
 
@@ -272,11 +290,11 @@ export function CameraScanner({ onDetected }: CameraScannerProps) {
             playsInline
           />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0,transparent_34%,rgba(0,0,0,0.58)_35%,rgba(0,0,0,0.78)_100%)]" />
-          <div className="pointer-events-none absolute left-1/2 top-1/2 h-44 w-[86vw] max-w-2xl -translate-x-1/2 -translate-y-1/2 rounded-[2rem] border-4 border-warehouse-yellow shadow-[0_0_32px_rgba(246,195,67,0.7)] sm:h-56" />
-          <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-3 bg-gradient-to-b from-black/80 to-transparent p-4 text-white">
+          <div className="pointer-events-none absolute left-1/2 top-1/2 h-24 w-[72vw] max-w-xl -translate-x-1/2 -translate-y-1/2 rounded-[1rem] border-2 border-warehouse-yellow shadow-[0_0_20px_rgba(246,195,67,0.7)] sm:h-28" />
+          <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-2 bg-gradient-to-b from-black/80 to-transparent p-2 text-white">
             <div>
-              <p className="text-2xl font-black">Quét camera</p>
-              <p className="text-sm font-bold text-white/80">
+              <p className="text-base font-black">Quét camera</p>
+              <p className="text-[10px] font-bold text-white/80 md:text-xs">
                 {status === "starting"
                   ? "Đang mở camera..."
                   : "Đưa barcode vào khung vàng"}
@@ -284,20 +302,20 @@ export function CameraScanner({ onDetected }: CameraScannerProps) {
             </div>
             <button
               type="button"
-              className="rounded-2xl bg-warehouse-red px-5 py-3 text-lg font-black text-white active:scale-95"
+              className="rounded-xl bg-warehouse-red px-3 py-2 text-sm font-black text-white active:scale-95"
               onClick={stopCamera}
             >
               Tắt
             </button>
           </div>
-          <div className="absolute inset-x-4 bottom-5 rounded-3xl bg-white/92 px-5 py-4 text-center text-lg font-black text-warehouse-ink shadow-card">
+          <div className="absolute inset-x-3 bottom-3 rounded-2xl bg-white/92 px-3 py-2 text-center text-sm font-black text-warehouse-ink shadow-card">
             Giữ mã trong khung, app sẽ tự đọc zone liên tục
           </div>
         </div>
       ) : null}
 
       {errorMessage ? (
-        <p className="mt-3 rounded-2xl bg-red-50 px-4 py-3 text-base font-bold text-warehouse-red">
+        <p className="mt-2 rounded-xl bg-red-50 px-3 py-2 text-xs font-bold text-warehouse-red md:text-sm">
           {errorMessage}
         </p>
       ) : null}

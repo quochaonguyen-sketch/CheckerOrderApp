@@ -11,12 +11,12 @@ type ResultCardProps = {
 export function ResultCard({ result, status, lastCode }: ResultCardProps) {
   if (status === "loading") {
     return (
-      <section className="flex min-h-[22rem] w-full flex-col items-center justify-center rounded-[2.5rem] border-4 border-warehouse-yellow bg-yellow-50 px-8 py-10 text-center shadow-card md:min-h-[28rem]">
-        <div className="h-5 w-5 animate-spin rounded-full border-4 border-warehouse-yellow border-t-transparent" />
-        <p className="mt-6 text-xl font-black uppercase tracking-[0.35em] text-warehouse-ink/70 md:text-3xl">
+      <section className="flex min-h-[11rem] w-full flex-col items-center justify-center rounded-[1.25rem] border-2 border-warehouse-yellow bg-yellow-50 px-4 py-5 text-center shadow-card md:min-h-[14rem]">
+        <div className="h-3 w-3 animate-spin rounded-full border-2 border-warehouse-yellow border-t-transparent" />
+        <p className="mt-3 text-sm font-black uppercase tracking-[0.2em] text-warehouse-ink/70 md:text-lg">
           Đang tra cứu
         </p>
-        <p className="mt-4 break-words text-5xl font-black uppercase tracking-widest text-warehouse-ink md:text-8xl">
+        <p className="mt-2 break-words text-2xl font-black uppercase tracking-widest text-warehouse-ink md:text-4xl">
           {lastCode}
         </p>
       </section>
@@ -25,7 +25,7 @@ export function ResultCard({ result, status, lastCode }: ResultCardProps) {
 
   if (!result) {
     return (
-      <section className="flex min-h-[22rem] w-full items-center justify-center rounded-[2.5rem] border-4 border-dashed border-warehouse-line bg-white/40 px-8 py-10 shadow-card md:min-h-[28rem]">
+      <section className="flex min-h-[11rem] w-full items-center justify-center rounded-[1.25rem] border-2 border-dashed border-warehouse-line bg-white/40 px-4 py-5 shadow-card md:min-h-[14rem]">
         <span className="sr-only">Chờ quét mã đơn</span>
       </section>
     );
@@ -33,11 +33,11 @@ export function ResultCard({ result, status, lastCode }: ResultCardProps) {
 
   if (!result.found) {
     return (
-      <section className="flex min-h-[22rem] w-full flex-col items-center justify-center rounded-[2.5rem] border-4 border-warehouse-red bg-red-50 px-8 py-10 text-center shadow-card md:min-h-[28rem]">
-        <p className="text-xl font-black uppercase tracking-[0.35em] text-warehouse-red md:text-3xl">
+      <section className="flex min-h-[11rem] w-full flex-col items-center justify-center rounded-[1.25rem] border-2 border-warehouse-red bg-red-50 px-4 py-5 text-center shadow-card md:min-h-[14rem]">
+        <p className="text-sm font-black uppercase tracking-[0.2em] text-warehouse-red md:text-lg">
           Mã quét
         </p>
-        <p className="mt-4 break-words text-5xl font-black uppercase tracking-widest text-warehouse-red md:text-8xl">
+        <p className="mt-2 break-words text-2xl font-black uppercase tracking-widest text-warehouse-red md:text-4xl">
           {lastCode}
         </p>
       </section>
@@ -48,21 +48,21 @@ export function ResultCard({ result, status, lastCode }: ResultCardProps) {
 
   return (
     <section
-      className={`flex min-h-[22rem] w-full flex-col items-center justify-center rounded-[2.5rem] border-4 bg-white px-5 py-8 text-center shadow-card md:min-h-[28rem] md:px-10 md:py-10 ${
+      className={`flex min-h-[11rem] w-full flex-col items-center justify-center rounded-[1.25rem] border-2 bg-white px-3 py-4 text-center shadow-card md:min-h-[14rem] md:px-5 md:py-5 ${
         status === "found" ? "border-warehouse-green" : "border-warehouse-line"
       }`}
     >
-      <p className="text-xl font-black uppercase tracking-[0.35em] text-warehouse-green md:text-3xl">
+      <p className="text-sm font-black uppercase tracking-[0.2em] text-warehouse-green md:text-lg">
         Zone
       </p>
-      <h1 className="mt-3 break-words text-[6.5rem] font-black uppercase leading-none tracking-tight text-warehouse-green sm:text-[8rem] md:text-[13rem]">
+      <h1 className="mt-2 break-words text-[3rem] font-black uppercase leading-none tracking-tight text-warehouse-green sm:text-[3.75rem] md:text-[6.5rem]">
         {data.zone || "--"}
       </h1>
-      <p className="mt-4 text-3xl font-black leading-tight text-warehouse-ink md:text-5xl">
+      <p className="mt-2 text-base font-black leading-tight text-warehouse-ink md:text-2xl">
         {[data.district, data.ward].filter(Boolean).join(" - ")}
       </p>
 
-      <div className="mt-8 grid w-full gap-4 md:grid-cols-3">
+      <div className="mt-4 grid w-full gap-2 md:grid-cols-3">
         <InfoBlock label="Mã quét" value={data.code} />
         <InfoBlock label="Khu vực" value={data.area || data.city || "Không có"} />
         <InfoBlock label="Ghi chú" value={data.note || "Không có"} />
@@ -73,11 +73,11 @@ export function ResultCard({ result, status, lastCode }: ResultCardProps) {
 
 function InfoBlock({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[1.5rem] border-2 border-warehouse-line bg-warehouse-paper px-5 py-4 text-center">
-      <p className="text-sm font-black uppercase tracking-[0.2em] text-warehouse-ink/50">
+    <div className="rounded-[0.8rem] border border-warehouse-line bg-warehouse-paper px-3 py-2 text-center">
+      <p className="text-[10px] font-black uppercase tracking-[0.12em] text-warehouse-ink/50">
         {label}
       </p>
-      <p className="mt-2 break-words text-2xl font-black text-warehouse-ink md:text-3xl">
+      <p className="mt-1 break-words text-sm font-black text-warehouse-ink md:text-lg">
         {value}
       </p>
     </div>

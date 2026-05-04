@@ -39,7 +39,7 @@ export function ScanInput({
     <form className="w-full" onSubmit={handleSubmit}>
       <label
         htmlFor="scan-code"
-        className="mb-4 block text-center text-xl font-black uppercase tracking-[0.28em] text-warehouse-ink/70 md:text-2xl"
+        className="mb-2 block text-center text-sm font-black uppercase tracking-[0.2em] text-warehouse-ink/70 md:text-base"
       >
         Quét mã đơn
       </label>
@@ -56,12 +56,12 @@ export function ScanInput({
         enterKeyHint="done"
         aria-label="Ô quét mã đơn"
         placeholder="Đưa máy quét vào đây"
-        className="h-20 w-full rounded-[1.5rem] border-4 border-warehouse-ink bg-white px-5 text-center text-3xl font-black uppercase tracking-wider text-warehouse-ink shadow-card outline-none transition focus:border-warehouse-green focus:ring-8 focus:ring-warehouse-green/20 sm:h-24 sm:rounded-[2rem] sm:px-8 sm:text-4xl md:h-32 md:text-6xl"
+        className="h-10 w-full rounded-[0.9rem] border-2 border-warehouse-ink bg-white px-3 text-center text-lg font-black uppercase tracking-wide text-warehouse-ink shadow-card outline-none transition focus:border-warehouse-green focus:ring-4 focus:ring-warehouse-green/20 sm:h-12 sm:rounded-[1rem] sm:px-4 sm:text-xl md:h-16 md:text-3xl"
         onChange={(event) => onChange(event.target.value)}
         onBlur={onRefocus}
         onPaste={handlePaste}
       />
-      <p className="mt-3 text-center text-base font-semibold text-warehouse-ink/60 sm:text-lg md:text-xl">
+      <p className="mt-2 text-center text-xs font-semibold text-warehouse-ink/60 sm:text-sm md:text-base">
         PDA/máy quét gửi Enter hoặc Tab sẽ tự tra cứu liên tục.
       </p>
     </form>

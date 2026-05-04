@@ -280,13 +280,13 @@ export function ScannerApp() {
 
   return (
     <main
-      className="min-h-[100svh] w-full px-3 py-4 text-warehouse-ink sm:px-4 md:px-8 md:py-8"
+      className="min-h-[100svh] w-full px-2 py-2 text-warehouse-ink sm:px-3 md:px-4 md:py-4"
       onMouseDown={focusInput}
       onTouchStart={focusInput}
     >
-      <div className="mx-auto flex min-h-[calc(100svh-2rem)] w-full max-w-7xl flex-col items-center justify-center gap-4 md:gap-8">
+      <div className="mx-auto flex min-h-[calc(100svh-1rem)] w-full max-w-5xl flex-col items-center justify-center gap-2 md:gap-4">
         <header className="text-center">
-          <h1 className="text-4xl font-black tracking-tight sm:text-5xl md:text-7xl">
+          <h1 className="text-2xl font-black tracking-tight sm:text-3xl md:text-4xl">
             Tra cứu
           </h1>
         </header>
