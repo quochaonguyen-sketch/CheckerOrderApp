@@ -64,8 +64,6 @@ export function ResultCard({ result, status, lastCode }: ResultCardProps) {
 
       <div className="mt-4 grid w-full gap-2 md:grid-cols-3">
         <InfoBlock label="Mã quét" value={data.code} />
-        <InfoBlock label="Khu vực" value={data.area || data.city || "Không có"} />
-        <InfoBlock label="Ghi chú" value={data.note || "Không có"} />
       </div>
     </section>
   );
