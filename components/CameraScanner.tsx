@@ -290,7 +290,7 @@ export function CameraScanner({ onDetected }: CameraScannerProps) {
             playsInline
           />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0,transparent_34%,rgba(0,0,0,0.58)_35%,rgba(0,0,0,0.78)_100%)]" />
-          <div className="pointer-events-none absolute left-1/2 top-1/2 h-24 w-[72vw] max-w-xl -translate-x-1/2 -translate-y-1/2 rounded-[1rem] border-2 border-warehouse-yellow shadow-[0_0_20px_rgba(246,195,67,0.7)] sm:h-28" />
+          <div className="pointer-events-none absolute left-1/2 top-1/2 h-[56vw] w-[56vw] max-h-64 max-w-64 -translate-x-1/2 -translate-y-1/2 rounded-[1rem] border-2 border-warehouse-yellow shadow-[0_0_20px_rgba(246,195,67,0.7)] sm:h-72 sm:w-72" />
           <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-2 bg-gradient-to-b from-black/80 to-transparent p-2 text-white">
             <div>
               <p className="text-base font-black">Quét camera</p>

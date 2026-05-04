@@ -37,7 +37,7 @@ export function ResultCard({ result, status, lastCode }: ResultCardProps) {
         <p className="text-sm font-black uppercase tracking-[0.2em] text-warehouse-red md:text-lg">
           Mã quét
         </p>
-        <p className="mt-2 break-words text-2xl font-black uppercase tracking-widest text-warehouse-red md:text-4xl">
+        <p className="mt-2 break-words text-6xl font-black uppercase tracking-widest text-warehouse-red md:text-4xl">
           {lastCode}
         </p>
       </section>
@@ -55,14 +55,14 @@ export function ResultCard({ result, status, lastCode }: ResultCardProps) {
       <p className="text-sm font-black uppercase tracking-[0.2em] text-warehouse-green md:text-lg">
         Zone
       </p>
-      <h1 className="mt-2 break-words text-[3rem] font-black uppercase leading-none tracking-tight text-warehouse-green sm:text-[3.75rem] md:text-[6.5rem]">
+      <h1 className="mt-2 break-words text-[130px] font-black uppercase leading-none tracking-tight text-warehouse-green mb-5">
         {data.zone || "--"}
       </h1>
       <p className="mt-2 text-base font-black leading-tight text-warehouse-ink md:text-2xl">
         {[data.district, data.ward].filter(Boolean).join(" - ")}
       </p>
 
-      <div className="mt-4 grid w-full gap-2 md:grid-cols-3">
+      <div className="mt-4 grid w-full gap-2 md:grid-cols-1">
         <InfoBlock label="Mã quét" value={data.code} />
       </div>
     </section>
